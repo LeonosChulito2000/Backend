@@ -1,0 +1,14 @@
+QUERY PARA CREAR LA BASE DE DATOS EN XAMPP
+
+REGISTRO DE USUARIOS
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombres VARCHAR(100) NOT NULL,
+  apellido_paterno VARCHAR(100) NOT NULL,
+  apellido_materno VARCHAR(100) NOT NULL,
+  correo VARCHAR(100) NOT NULL,
+  telefono VARCHAR(15) NOT NULL,
+  fecha_registro DATE NOT NULL,
+  direccion_envio VARCHAR(255) NOT NULL,
+  numero_pedidos INT DEFAULT 0
+);g
