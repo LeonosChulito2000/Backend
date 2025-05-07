@@ -1,7 +1,7 @@
 QUERY PARA CREAR LA BASE DE DATOS EN XAMPP
-REGISTRO DE USUARIOS
 
 ======================================================================
+REGISTRO DE USUARIOS
 
 CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,6 +18,7 @@ CREATE TABLE usuarios (
 
 ======================================================================
 QUERY PARA CREAR LA BASE DED ATOS DE NUEVOS ZAPATOS
+
 CREATE TABLE zapatos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -29,3 +30,15 @@ CREATE TABLE zapatos (
     fecha_subida DATE NOT NULL,
     imagen VARCHAR(255) NOT NULL
 );
+
+======================================================================
+QUERY PARA CREAR LA TABLA D ADMIN E INSERTAR VALROES
+
+CREATE TABLE admin_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) COLLATE utf8mb4_bin NOT NULL,
+    password VARCHAR(100) COLLATE utf8mb4_bin NOT NULL
+);
+
+INSERT INTO admin_users (username, password) VALUES ('ShoeTRAdmin', 'Admin123');
+
