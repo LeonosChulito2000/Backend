@@ -13,14 +13,14 @@ CREATE TABLE usuarios (
   fecha_registro DATE NOT NULL,
   direccion_envio VARCHAR(255) NOT NULL,
   numero_pedidos INT DEFAULT 0
-);g
-
+);
 
 ======================================================================
 QUERY PARA CREAR LA BASE DED ATOS DE NUEVOS ZAPATOS
 
 CREATE TABLE zapatos (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_barras VARCHAR(9) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     tallas VARCHAR(50) NOT NULL,
     precio INT NOT NULL,
@@ -42,3 +42,20 @@ CREATE TABLE admin_users (
 
 INSERT INTO admin_users (username, password) VALUES ('ShoeTRAdmin', 'Admin123');
 
+======================================================================
+QUERY PARA CREAR LA TABLA DE LOS PEDIDOS
+
+CREATE TABLE pedidosOnline (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_pedido VARCHAR(5),
+  id_cliente INT,
+  sku VARCHAR(20),
+  color VARCHAR(50),
+  material VARCHAR(50),
+  talla VARCHAR(10),
+  cantidad INT,
+  precio DECIMAL(10,2),
+  fecha_compra DATE,
+  fecha_entrega DATE,
+  estado ENUM('preparacion', 'enviado', 'entregado') NOT NULL DEFAULT 'preparacion'
+);

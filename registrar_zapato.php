@@ -14,6 +14,18 @@ try {
     }
 
     $nombre = $_POST['nombre'] ?? '';
+    $codigo_barras = $_POST['codigo_barras'] ?? '';
+
+    $verifica = $conn->prepare("SELECT id FROM zapatos WHERE codigo_barras = ?");
+    $verifica->bind_param("s", $codigo_barras);
+    $verifica->execute();
+    $verifica->store_result();
+
+    if ($verifica->num_rows > 0) {
+        throw new Exception("Este código de barras ya existe. Intenta con otro.");
+    }
+
+
     $tallas = $_POST['tallas'] ?? '';
     $colores = $_POST['colores'] ?? '';
     $stock = intval($_POST['stock'] ?? 0);
@@ -28,15 +40,15 @@ try {
         throw new Exception("Error al mover la imagen al directorio destino.");
     }
 
-    $sql = "INSERT INTO zapatos (nombre, tallas, precio, colores, material, stock, fecha_subida, imagen) 
-    VALUES ('$nombre', '$tallas', $precio, '$colores', '$material', $stock, '$fecha_subida', '$nombreImagen')";
+    $sql = "INSERT INTO zapatos (codigo_barras, nombre, tallas, precio, colores, material, stock, fecha_subida, imagen) 
+    VALUES ('$codigo_barras', '$nombre', '$tallas', $precio, '$colores', '$material', $stock, '$fecha_subida', '$nombreImagen')";
 
     if ($conn->query($sql) !== TRUE) {
         throw new Exception("Error en la base de datos: " . $conn->error);
     }
 
     $response["status"] = "success";
-    $response["message"] = "Zapato registrado con éxito.";
+   // $response["message"] = "Zapato registrado con éxito.";
 } catch (Exception $e) {
     $response["message"] = $e->getMessage();
 }

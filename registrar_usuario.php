@@ -26,12 +26,26 @@ $fecha_registro = $data['fecha_registro'] ?? date('Y-m-d');
 $direccion_envio = $data['direccion_envio'] ?? '';
 $numero_pedidos = $data['numero_pedidos'] ?? 1;
 
-// Preparar y ejecutar la consulta de inserción
+// ✅ Verificar si el correo ya está registrado
+$check = $conn->prepare("SELECT id FROM usuarios WHERE correo = ?");
+$check->bind_param("s", $correo);
+$check->execute();
+$check->store_result();
+
+if ($check->num_rows > 0) {
+    echo json_encode(["success" => false, "message" => "El correo ya está registrado."]);
+    $check->close();
+    $conn->close();
+    exit();
+}
+$check->close();
+
+// ✅ Insertar el nuevo usuario si no existe
 $stmt = $conn->prepare("INSERT INTO usuarios (nombres, apellido_paterno, apellido_materno, correo, telefono, fecha_registro, direccion_envio, numero_pedidos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
 if ($stmt) {
     $stmt->bind_param("sssssssi", $nombres, $apellido_paterno, $apellido_materno, $correo, $telefono, $fecha_registro, $direccion_envio, $numero_pedidos);
-    
+
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Usuario registrado correctamente."]);
     } else {
