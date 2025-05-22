@@ -59,3 +59,15 @@ CREATE TABLE pedidosOnline (
   fecha_entrega DATE,
   estado ENUM('preparacion', 'enviado', 'entregado') NOT NULL DEFAULT 'preparacion'
 );
+
+======================================================================
+QUERY CRCREAR LA TABLA DE VENTAS.
+
+CREATE TABLE ventas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero_venta VARCHAR(20) NOT NULL,
+    productos TEXT NOT NULL, -- lista de IDs o códigos separados por comas
+    precio_total DECIMAL(10,2) NOT NULL,
+    fecha_venta DATE NOT NULL,
+    id_cliente INT DEFAULT NULL
+);

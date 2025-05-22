@@ -1,21 +1,26 @@
 <?php
-// Permitir acceso desde cualquier origen
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header('Content-Type: application/json');
 
-// Incluir la conexión a la base de datos
 require_once 'db.php';
 
-// Obtener los datos del cuerpo si es JSON
 $input = json_decode(file_get_contents("php://input"), true);
-$correo = isset($input['correo']) ? $input['correo'] : null;
+$valor = isset($input['correo']) ? $input['correo'] : null;
 
-if ($correo) {
-    // Buscar usuario igual que antes...
-    $stmt = $conn->prepare("SELECT id, nombres, apellido_paterno, apellido_materno, fecha_registro, numero_pedidos, direccion_envio, correo, telefono FROM usuarios WHERE correo = ?");
-    $stmt->bind_param("s", $correo);
+if ($valor) {
+    if (filter_var($valor, FILTER_VALIDATE_EMAIL)) {
+        $query = "SELECT * FROM usuarios WHERE correo = ?";
+    } elseif (preg_match('/^\d{10}$/', $valor)) {
+        $query = "SELECT * FROM usuarios WHERE telefono = ?";
+    } else {
+        echo json_encode(['success' => false, 'mensaje' => 'Entrada inválida']);
+        exit;
+    }
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $valor);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
@@ -29,7 +34,6 @@ if ($correo) {
     $stmt->close();
     $conn->close();
 } else {
-    echo json_encode(['success' => false, 'mensaje' => 'Correo no recibido o vacío']);
+    echo json_encode(['success' => false, 'mensaje' => 'Valor no recibido']);
 }
-
 ?>
